@@ -62,7 +62,6 @@ namespace ElevenNote.WebApi.Controllers
             return Ok();
         }
 
-
         private NoteService CreateNoteService()
         {
             var userID = Guid.Parse(User.Identity.GetUserId());
