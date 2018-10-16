@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ElevenNote.Contracts
 {
-    public class Class1
+    public interface INoteService
     {
     }
 }
