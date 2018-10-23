@@ -27,11 +27,13 @@ namespace ElevenNote.Services
 
         public NoteDetail GetNoteById(int id)
         {
+            CallCount++;
             return new NoteDetail { NoteID = id };
         }
 
         public IEnumerable<NoteListItem> GetNotes()
         {
+            CallCount++;
             var @return = new List<NoteListItem> { new NoteListItem { NoteID = 1 } };
             return @return;
         }
