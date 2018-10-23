@@ -1,4 +1,5 @@
-﻿using ElevenNote.Models;
+﻿using ElevenNote.Contracts;
+using ElevenNote.Models;
 using ElevenNote.Services;
 using Microsoft.AspNet.Identity;
 using System;
@@ -13,17 +14,25 @@ namespace ElevenNote.WebApi.Controllers
     [Authorize]
     public class NoteController : ApiController
     {
+        public NoteController(INoteService mockService)
+        {
+            _noteService = mockService;
+        }
+
+        public NoteController()
+        {
+            _noteService = CreateNoteService();
+        }
+
         public IHttpActionResult GetAll()
         {
-            NoteService noteService = CreateNoteService();
-            var notes = noteService.GetNotes();
+            var notes = _noteService.GetNotes();
             return Ok(notes);
         }
 
         public IHttpActionResult Get(int id)
         {
-            NoteService noteService = CreateNoteService();
-            var note = noteService.GetNoteById(id);
+            var note = _noteService.GetNoteById(id);
             return Ok(note);
         }
 
@@ -32,9 +41,7 @@ namespace ElevenNote.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var service = CreateNoteService();
-
-            if (!service.CreateNote(note))
+            if (!_noteService.CreateNote(note))
                 return InternalServerError();
 
             return Ok();
@@ -45,9 +52,7 @@ namespace ElevenNote.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var service = CreateNoteService();
-
-            if (!service.UpdateNote(note))
+            if (!_noteService.UpdateNote(note))
                 return InternalServerError();
 
             return Ok();
@@ -55,8 +60,7 @@ namespace ElevenNote.WebApi.Controllers
 
         public IHttpActionResult Delete(int id)
         {
-            var service = CreateNoteService();
-            if (!service.DeleteNote(id))
+            if (!_noteService.DeleteNote(id))
                 return InternalServerError();
 
             return Ok();
@@ -68,5 +72,7 @@ namespace ElevenNote.WebApi.Controllers
             var service = new NoteService(userID);
             return service;
         }
+
+        private INoteService _noteService;
     }
 }
