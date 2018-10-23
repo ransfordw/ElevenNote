@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MockNoteService.cs" />
     <Compile Include="NoteService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ElevenNote.Contracts\ElevenNote.Contracts.csproj">
+      <Project>{A409F834-3F81-4C62-86CA-61FB02C97294}</Project>
+      <Name>ElevenNote.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ElevenNote.Data\ElevenNote.Data.csproj">
       <Project>{7B423B76-EFAC-43A1-84FE-82C226B9877F}</Project>
       <Name>ElevenNote.Data</Name>

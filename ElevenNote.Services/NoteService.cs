@@ -1,4 +1,5 @@
-﻿using ElevenNote.Data;
+﻿using ElevenNote.Contracts;
+using ElevenNote.Data;
 using ElevenNote.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ElevenNote.Services
 {
-    public class NoteService
+    public class NoteService : INoteService
     {
         private readonly Guid _userID;
 
