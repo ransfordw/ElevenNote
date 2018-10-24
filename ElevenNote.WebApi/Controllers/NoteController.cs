@@ -14,24 +14,25 @@ namespace ElevenNote.WebApi.Controllers
     [Authorize]
     public class NoteController : ApiController
     {
+        private INoteService _noteService;
+
+        public NoteController() { }
+
         public NoteController(INoteService mockService)
         {
             _noteService = mockService;
         }
 
-        public NoteController()
-        {
-            _noteService = CreateNoteService();
-        }
-
         public IHttpActionResult GetAll()
         {
+            CreateNoteService();
             var notes = _noteService.GetNotes();
             return Ok(notes);
         }
 
         public IHttpActionResult Get(int id)
         {
+            CreateNoteService();
             var note = _noteService.GetNoteById(id);
             return Ok(note);
         }
@@ -40,6 +41,8 @@ namespace ElevenNote.WebApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            CreateNoteService();
 
             if (!_noteService.CreateNote(note))
                 return InternalServerError();
@@ -52,6 +55,8 @@ namespace ElevenNote.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            CreateNoteService();
+
             if (!_noteService.UpdateNote(note))
                 return InternalServerError();
 
@@ -60,19 +65,22 @@ namespace ElevenNote.WebApi.Controllers
 
         public IHttpActionResult Delete(int id)
         {
+            CreateNoteService();
+
             if (!_noteService.DeleteNote(id))
                 return InternalServerError();
 
             return Ok();
         }
 
-        private NoteService CreateNoteService()
+        private void CreateNoteService()
         {
+            if (_noteService == null)
+            {
             var userID = Guid.Parse(User.Identity.GetUserId());
-            var service = new NoteService(userID);
-            return service;
+            _noteService = new NoteService(userID);
+            }
         }
 
-        private INoteService _noteService;
     }
 }
